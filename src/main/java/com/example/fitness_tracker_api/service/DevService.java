@@ -3,6 +3,7 @@ package com.example.fitness_tracker_api.service;
 import com.example.fitness_tracker_api.dto.DevProfileDTO;
 import com.example.fitness_tracker_api.dto.DeveloperDTO;
 import com.example.fitness_tracker_api.exception.DeveloperNotFoundException;
+import com.example.fitness_tracker_api.exception.DeveloperNotUniqueException;
 import com.example.fitness_tracker_api.mapper.ModelMapper;
 import com.example.fitness_tracker_api.models.Developer;
 import com.example.fitness_tracker_api.repository.DeveloperRepository;
@@ -23,10 +24,7 @@ public class DevService {
         this.passwordEncoder=passwordEncoder;
     }
 
-    public Developer getDev()
-    {
-        return null;
-    }
+
 
     public long saveDeveloper(DeveloperDTO developerDTO)
     {
@@ -53,5 +51,16 @@ public class DevService {
 
 
 
+    }
+
+    /*
+    Check if developer with the email exists
+    Needed so that two devs don't have same email
+
+     */
+
+    public boolean developerWithEmailExists(String email)
+    {
+        return developerRepository.existsByEmail(email);
     }
 }

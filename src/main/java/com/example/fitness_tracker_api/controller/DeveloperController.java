@@ -2,6 +2,7 @@ package com.example.fitness_tracker_api.controller;
 
 import com.example.fitness_tracker_api.dto.DevProfileDTO;
 import com.example.fitness_tracker_api.dto.DeveloperDTO;
+import com.example.fitness_tracker_api.exception.DeveloperNotUniqueException;
 import com.example.fitness_tracker_api.service.DevService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -18,12 +19,19 @@ private final DevService devService;
         this.devService = devService;
     }
 
+    /*
+
+   Developer emails should be unique
+   So adding a check here
+
+     */
     @PostMapping("/api/developers/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody DeveloperDTO developerDTO) {
+        if(devService.developerWithEmailExists(developerDTO.getEmail()))
+            throw new DeveloperNotUniqueException("Email already exists!!");
         long devId=devService.saveDeveloper(developerDTO);
         String devURL="/api/developers/"+devId;
         return ResponseEntity.status(201).header("location",devURL).body("okay");
-
 
 
     }

@@ -12,4 +12,6 @@ public interface DeveloperRepository extends JpaRepository<Developer,Long> {
 
 
     public Optional<Developer> findDeveloperByEmail(String email);
+
+    boolean existsByEmail(String email);
 }

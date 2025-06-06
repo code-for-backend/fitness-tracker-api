@@ -28,6 +28,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(d.getMessage());
     }
 
+    @ExceptionHandler(DeveloperNotUniqueException.class)
+    public ResponseEntity<String> handleDeveloperNotUniqueException(DeveloperNotUniqueException e)
+    {
+        return ResponseEntity.status(409).body(e.getMessage());//409 is for conflict
+    }
+
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<String> handleAcessDeniedException(AccessDeniedException e)
