@@ -1,9 +1,15 @@
 package com.example.fitness_tracker_api.controller;
 
+import com.example.fitness_tracker_api.dto.FitnessDataDTO;
+import com.example.fitness_tracker_api.dto.FitnessDataResponseDTO;
 import com.example.fitness_tracker_api.models.FitnessData;
 import com.example.fitness_tracker_api.service.FitnessDataService;
+import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,10 +23,20 @@ public class FitnessDataController {
         this.fitnessDataService = fitnessDataService;
     }
 
-    @GetMapping("/data")
-    public ResponseEntity<List<FitnessData>> fitnessData()
+    @GetMapping("/api/tracker")
+    public ResponseEntity<List<FitnessDataResponseDTO>> fitnessData()
     {
-        return ResponseEntity.status(200).body(fitnessDataService.getFitnessData());
+       List<FitnessDataResponseDTO> fitnessDataResponseDTO=fitnessDataService.getFitnessData();
+      return ResponseEntity.status(200).body(fitnessDataResponseDTO);
+
+    }
+
+
+    @PostMapping("/api/tracker")
+    public ResponseEntity<?> uploadFitnessData(@Valid @RequestBody FitnessDataDTO fitnessDataDTO)
+    {
+        fitnessDataService.saveFitnessData(fitnessDataDTO);
+        return ResponseEntity.status(201).body("Okay");
 
     }
 }
