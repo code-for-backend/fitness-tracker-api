@@ -5,6 +5,7 @@ import com.example.fitness_tracker_api.dto.ApplicationResponseDTO;
 import com.example.fitness_tracker_api.dto.DevProfileDTO;
 import com.example.fitness_tracker_api.dto.DeveloperDTO;
 import com.example.fitness_tracker_api.exception.DeveloperNotUniqueException;
+import com.example.fitness_tracker_api.models.Developer;
 import com.example.fitness_tracker_api.service.DevService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -44,16 +45,19 @@ private final DevService devService;
     public ResponseEntity<DevProfileDTO> profile(@PathVariable long id, Authentication authentication)
     {
         UserDetails devDetails=(UserDetails)authentication.getPrincipal();
-        String currentDeveloperName=devDetails.getUsername();//get email of authenticated user
-        //check if the id belongs to this dev
-        String anotherDevName=devService.getDeveloperName(id);
-        if(currentDeveloperName.equals(anotherDevName)) {
+        String currentDevEmail=devDetails.getUsername();//get email of authenticated user
+        Developer developer=devService.findDeveloper(id);
 
-            DevProfileDTO devProfileDTO = devService.getDeveloperProfile(id);
+        //check if the id belongs to this dev
+        if(currentDevEmail.equals(developer.getEmail())) {
+
+            DevProfileDTO devProfileDTO = devService.getDeveloperProfile(developer);
             return ResponseEntity.status(200).body(devProfileDTO);
         }
         else
             throw new AccessDeniedException("You are not authorized to view this profile!!!");
+
+
 
     }
 

@@ -5,11 +5,14 @@ import com.example.fitness_tracker_api.dto.DeveloperDTO;
 import com.example.fitness_tracker_api.exception.DeveloperNotFoundException;
 import com.example.fitness_tracker_api.exception.DeveloperNotUniqueException;
 import com.example.fitness_tracker_api.mapper.ModelMapper;
+import com.example.fitness_tracker_api.models.Application;
 import com.example.fitness_tracker_api.models.Developer;
+import com.example.fitness_tracker_api.repository.ApplicationRepository;
 import com.example.fitness_tracker_api.repository.DeveloperRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,9 +20,11 @@ public class DevService {
     private final DeveloperRepository developerRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationRepository applicationRepository;
 
-    public DevService(DeveloperRepository developerRepository, ModelMapper modelMapper,PasswordEncoder passwordEncoder) {
+    public DevService(DeveloperRepository developerRepository,ApplicationRepository applicationRepository, ModelMapper modelMapper,PasswordEncoder passwordEncoder) {
         this.developerRepository = developerRepository;
+        this.applicationRepository=applicationRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder=passwordEncoder;
     }
@@ -34,20 +39,23 @@ public class DevService {
     }
 
 
-    public DevProfileDTO getDeveloperProfile(long id)
+    public DevProfileDTO getDeveloperProfile(Developer developer)
     {
-       Optional<Developer> optionalDev=developerRepository.findById(id);
-       return modelMapper.convertDeveloperToDTO(optionalDev.get());
+      // Developer developer=developerRepository.findById(id).orElseThrow(()->new DeveloperNotFoundException("Developer not found!"));
+        long devId=developer.getId();
+        String devEmail=developer.getEmail();
+       List<Application> applications=applicationRepository.findApplicationsByDeveloperIdOrderByUploadTimeDesc(devId);
+
+       return new DevProfileDTO(devId,devEmail,applications);
+
 
 
     }
 
-    public String getDeveloperName(long id)
+    public Developer findDeveloper(long id)
     {
-        var dev=developerRepository.findById(id)
+        return developerRepository.findById(id)
                 .orElseThrow(()->new DeveloperNotFoundException("Developer not found"));
-        return dev.getEmail();
-
 
 
 

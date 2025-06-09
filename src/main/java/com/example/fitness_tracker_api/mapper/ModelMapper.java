@@ -29,10 +29,6 @@ public class ModelMapper {
     }
 
 
-    public DevProfileDTO convertDeveloperToDTO(Developer developer)
-    {
-        return new DevProfileDTO(developer.getId(),developer.getEmail());
-    }
 
 
     public Application convertDTOToApplication(ApplicationDTO applicationDTO)
