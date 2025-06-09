@@ -20,7 +20,8 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception
     {
        http.authorizeHttpRequests(auth->auth.requestMatchers(HttpMethod.POST,"/api/developers/signup").permitAll()
-               .requestMatchers("/h2-console/**").permitAll().requestMatchers(HttpMethod.GET,"/api/developers/*").authenticated())
+               .requestMatchers("/h2-console/**").permitAll().requestMatchers(HttpMethod.GET,"/api/developers/*").authenticated()
+               .requestMatchers(HttpMethod.POST,"/api/application/register").authenticated())
                .httpBasic(Customizer.withDefaults())
                .csrf(token->token.disable())
                .headers(headers->headers.frameOptions().disable())

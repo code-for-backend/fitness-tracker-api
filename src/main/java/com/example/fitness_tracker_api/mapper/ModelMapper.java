@@ -1,9 +1,7 @@
 package com.example.fitness_tracker_api.mapper;
 
-import com.example.fitness_tracker_api.dto.DevProfileDTO;
-import com.example.fitness_tracker_api.dto.DeveloperDTO;
-import com.example.fitness_tracker_api.dto.FitnessDataDTO;
-import com.example.fitness_tracker_api.dto.FitnessDataResponseDTO;
+import com.example.fitness_tracker_api.dto.*;
+import com.example.fitness_tracker_api.models.Application;
 import com.example.fitness_tracker_api.models.Developer;
 import com.example.fitness_tracker_api.models.FitnessData;
 import org.springframework.stereotype.Component;
@@ -34,6 +32,20 @@ public class ModelMapper {
     public DevProfileDTO convertDeveloperToDTO(Developer developer)
     {
         return new DevProfileDTO(developer.getId(),developer.getEmail());
+    }
+
+
+    public Application convertDTOToApplication(ApplicationDTO applicationDTO)
+    {
+        return new Application(applicationDTO.getName(), applicationDTO.getDescription());
+
+    }
+
+    public ApplicationResponseDTO convertApplicationToApplicationRegisterSuccessDTO(Application application)
+    {
+        return new ApplicationResponseDTO(application.getName(),application.getApiKey());
+
+
     }
 
 

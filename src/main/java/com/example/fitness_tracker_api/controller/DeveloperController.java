@@ -1,5 +1,7 @@
 package com.example.fitness_tracker_api.controller;
 
+import com.example.fitness_tracker_api.dto.ApplicationDTO;
+import com.example.fitness_tracker_api.dto.ApplicationResponseDTO;
 import com.example.fitness_tracker_api.dto.DevProfileDTO;
 import com.example.fitness_tracker_api.dto.DeveloperDTO;
 import com.example.fitness_tracker_api.exception.DeveloperNotUniqueException;
@@ -11,6 +13,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class DeveloperController {
@@ -53,9 +57,6 @@ private final DevService devService;
 
     }
 
-    @GetMapping("/hello")
-    public String hello()
-    {
-        return "hello";
-    }
+
+
 }
