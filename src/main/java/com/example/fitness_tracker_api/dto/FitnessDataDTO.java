@@ -12,12 +12,15 @@ public class FitnessDataDTO {
     private int duration;
     @Max(value = 2000)
     private int calories;
+    @NotBlank(message = "Application name is required")
+    private String appName;
 
-    public FitnessDataDTO(String username, String activity, int duration,int calories) {
+    public FitnessDataDTO(String username, String activity, int duration,int calories,String appName) {
         this.username = username;
         this.activity = activity;
         this.calories = calories;
         this.duration=duration;
+        this.appName=appName;
 
     }
 
@@ -47,6 +50,14 @@ public class FitnessDataDTO {
 
     public int getCalories() {
         return calories;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
     public void setCalories(int calories) {

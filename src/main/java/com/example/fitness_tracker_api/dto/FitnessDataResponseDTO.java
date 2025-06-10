@@ -5,6 +5,7 @@ public class FitnessDataResponseDTO {
     private long id;
     private String username,activity;
     private int duration,calories;
+    private String application;
 
     public long getId() {
         return id;
@@ -26,12 +27,13 @@ public class FitnessDataResponseDTO {
         return activity;
     }
 
-    public FitnessDataResponseDTO(long id, String username, String activity, int duration, int calories) {
+    public FitnessDataResponseDTO(long id, String username, String activity, int duration, int calories,String application) {
         this.id = id;
         this.username = username;
         this.activity = activity;
         this.duration = duration;
         this.calories = calories;
+        this.application =application;
     }
 
     public void setActivity(String activity) {
@@ -52,6 +54,14 @@ public class FitnessDataResponseDTO {
 
     public void setCalories(int calories) {
         this.calories = calories;
+    }
+
+    public String getApplication() {
+        return application;
+    }
+
+    public void setApplication(String application) {
+        this.application = application;
     }
 }
 

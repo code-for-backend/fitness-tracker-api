@@ -44,6 +44,7 @@ private final DevService devService;
     @GetMapping("/api/developers/{id}")
     public ResponseEntity<DevProfileDTO> profile(@PathVariable long id, Authentication authentication)
     {
+        System.out.println("Check..");
         UserDetails devDetails=(UserDetails)authentication.getPrincipal();
         String currentDevEmail=devDetails.getUsername();//get email of authenticated user
         Developer developer=devService.findDeveloper(id);

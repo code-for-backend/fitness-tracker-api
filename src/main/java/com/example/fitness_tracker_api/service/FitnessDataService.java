@@ -3,6 +3,7 @@ package com.example.fitness_tracker_api.service;
 import com.example.fitness_tracker_api.dto.FitnessDataDTO;
 import com.example.fitness_tracker_api.dto.FitnessDataResponseDTO;
 import com.example.fitness_tracker_api.mapper.ModelMapper;
+import com.example.fitness_tracker_api.models.Application;
 import com.example.fitness_tracker_api.models.FitnessData;
 import com.example.fitness_tracker_api.repository.FitnessDataRepository;
 import org.springframework.stereotype.Service;
@@ -21,16 +22,16 @@ public class FitnessDataService {
     }
 
 
-    public List<FitnessDataResponseDTO> getFitnessData()
+    public List<FitnessDataResponseDTO> getFitnessData(Application application)
     {
-        List<FitnessData> fitnessDataList=fitnessDataRepository.findAll();
-       return fitnessDataList.stream().map(modelMapper::convertFitnessDataToDTO)
+        List<FitnessData> fitnessData=fitnessDataRepository.findFitnessDataByApplicationOrderByUploadTimeDesc(application);
+       return fitnessData.stream().map(modelMapper::convertFitnessDataToDTO)
                .collect(Collectors.toList());
     }
 
-    public void saveFitnessData(FitnessDataDTO fitnessDataDTO)
+    public void saveFitnessData(FitnessDataDTO fitnessDataDTO,Application application)
     {
-       fitnessDataRepository.save(modelMapper.convertDTOToFitnessData(fitnessDataDTO));
+       fitnessDataRepository.save(modelMapper.convertDTOToFitnessData(fitnessDataDTO,application));
     }
 
 

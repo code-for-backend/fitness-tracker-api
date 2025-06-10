@@ -11,15 +11,18 @@ public class ModelMapper {
 
     public FitnessDataResponseDTO convertFitnessDataToDTO(FitnessData fitnessData)
     {
+        String applicationName=fitnessData.getApplication().getName();
+
         return new FitnessDataResponseDTO(fitnessData.getId(),fitnessData.getUsername(), fitnessData.getActivity(),
-                fitnessData.getDuration(),fitnessData.getCalories());
+                fitnessData.getDuration(),fitnessData.getCalories(),applicationName);
 
     }
 
-    public FitnessData convertDTOToFitnessData(FitnessDataDTO fitnessDataDTO)
+    public FitnessData convertDTOToFitnessData(FitnessDataDTO fitnessDataDTO,Application application)
     {
+
         return new FitnessData(fitnessDataDTO.getUsername(), fitnessDataDTO.getActivity(),fitnessDataDTO.getDuration()
-                , fitnessDataDTO.getCalories());
+                , fitnessDataDTO.getCalories(),application);
     }
 
 
