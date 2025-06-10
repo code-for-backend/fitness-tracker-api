@@ -1,5 +1,6 @@
 package com.example.fitness_tracker_api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
@@ -21,8 +22,10 @@ public class Application {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id",nullable = false) //each application must have a developer
+    @JsonIgnore
     private Developer developer;
 
+    @JsonIgnore
     private LocalDateTime uploadTime=LocalDateTime.now();
 
     public Application(String name, String description,String apiKey) {
