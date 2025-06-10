@@ -24,6 +24,7 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
             new AntPathRequestMatcher("/api/tracker","POST"));//check API key only for these two request
     private final AuthenticationManager authenticationManager;
     private final AuthenticationEntryPoint authenticationEntryPoint=(((request, response, authException) ->{
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
         response.getWriter().write("{\"error\": \"" + authException.getMessage() + "\"}");
 

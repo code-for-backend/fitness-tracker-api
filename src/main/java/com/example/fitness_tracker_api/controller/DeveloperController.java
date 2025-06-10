@@ -14,54 +14,47 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 @RestController
 public class DeveloperController {
-private final DevService devService;
+    private final DevService devService;
+
     public DeveloperController(DevService devService) {
         this.devService = devService;
     }
 
-    /*
-
-   Developer emails should be unique
-   So adding a check here
-
-     */
     @PostMapping("/api/developers/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody DeveloperDTO developerDTO) {
         if(devService.developerWithEmailExists(developerDTO.getEmail()))
             throw new DeveloperNotUniqueException("Email already exists!!");
-        long devId=devService.saveDeveloper(developerDTO);
-        String devURL="/api/developers/"+devId;
-        return ResponseEntity.status(201).header("location",devURL).body("okay");
-
-
+        long devId = devService.saveDeveloper(developerDTO);
+        String devURL = "/api/developers/" + devId;
+        return ResponseEntity.status(201).header("location", devURL).body("okay");
     }
 
     @GetMapping("/api/developers/{id}")
-    public ResponseEntity<DevProfileDTO> profile(@PathVariable long id, Authentication authentication)
-    {
-        System.out.println("Check..");
-        UserDetails devDetails=(UserDetails)authentication.getPrincipal();
-        String currentDevEmail=devDetails.getUsername();//get email of authenticated user
-        Developer developer=devService.findDeveloper(id);
+    public ResponseEntity<DevProfileDTO> profile(@PathVariable long id, Authentication authentication) {
 
-        //check if the id belongs to this dev
-        if(currentDevEmail.equals(developer.getEmail())) {
+        // Authentication check
+        UserDetails devDetails = (UserDetails) authentication.getPrincipal();
+        String currentDevEmail = devDetails.getUsername();
 
-            DevProfileDTO devProfileDTO = devService.getDeveloperProfile(developer);
-            return ResponseEntity.status(200).body(devProfileDTO);
-        }
-        else
+        // Database query for developer
+        Developer developer = devService.findDeveloper(id);
+
+        // Authorization check
+        if (!currentDevEmail.equals(developer.getEmail())) {
             throw new AccessDeniedException("You are not authorized to view this profile!!!");
+        }
 
-
-
+        // Get profile with applications
+        DevProfileDTO devProfileDTO = devService.getDeveloperProfile(developer);
+        return ResponseEntity.status(200).body(devProfileDTO);
     }
-
-
-
 }
+
+

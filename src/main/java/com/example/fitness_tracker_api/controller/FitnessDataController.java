@@ -30,8 +30,12 @@ public class FitnessDataController {
     @GetMapping("/api/tracker")
     public ResponseEntity<?> fitnessData()
     {
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        Application application=(Application)authentication.getPrincipal();
+        //Get all fitness data for the given application
+        List<FitnessDataResponseDTO> fitnessData=fitnessDataService.getFitnessData(application);
 
-      return ResponseEntity.status(200).body("Okay");
+      return ResponseEntity.status(200).body(fitnessData);
 
     }
 

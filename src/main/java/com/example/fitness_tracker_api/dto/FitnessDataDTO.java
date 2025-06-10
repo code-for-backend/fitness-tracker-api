@@ -1,5 +1,6 @@
 package com.example.fitness_tracker_api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.*;
 
@@ -12,6 +13,8 @@ public class FitnessDataDTO {
     private int duration;
     @Max(value = 2000)
     private int calories;
+
+    @JsonProperty("app_name")
     @NotBlank(message = "Application name is required")
     private String appName;
 

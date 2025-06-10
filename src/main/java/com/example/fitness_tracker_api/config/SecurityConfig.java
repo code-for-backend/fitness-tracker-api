@@ -34,7 +34,7 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http,AuthenticationManager authenticationManager) throws Exception
     {
        http.authorizeHttpRequests(auth->auth.requestMatchers(HttpMethod.POST,"/api/developers/signup").permitAll()
-               .requestMatchers("/h2-console/**").permitAll().requestMatchers(HttpMethod.GET,"/api/developers/*").authenticated()
+               .requestMatchers("/h2-console/**").permitAll().requestMatchers(HttpMethod.GET,"/api/developers/**").authenticated()
                .requestMatchers(HttpMethod.POST,"/api/application/register").authenticated()
                .requestMatchers("/api/tracker").authenticated())
                .addFilterBefore(new ApiKeyAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
